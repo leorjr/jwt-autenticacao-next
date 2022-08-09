@@ -1,48 +1,56 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function HomeScreen() {
   const router = useRouter();
-  const [values, setValues] = React.useState({
-    usuario: 'omariosouto',
-    senha: 'safepassword',
+
+  const [values, setValues] = useState({
+    usuario: "leonardo",
+    senha: "123456",
   });
 
-  function handleChange(event) {
-    const fieldValue = event.target.value;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    router.push("/auth-page-ssr");
+    // router.push("/auth-page-static");
+  };
+
+  const handleChange = (event) => {
     const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+
     setValues((currentValues) => {
       return {
         ...currentValues,
         [fieldName]: fieldValue,
       };
-    })
-  }
+    });
+  };
+
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
 
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={(event) => {
-        event.preventDefault();
-
-        // router.push('/auth-page-static');
-        router.push('/auth-page-ssr');
-      }}>
+      <form onSubmit={(event) => handleSubmit(event)}>
         <input
-          placeholder="Usuário" name="usuario"
-          value={values.usuario} onChange={handleChange}
+          placeholder="Usuário"
+          name="usuario"
+          value={values.usuario}
+          onChange={handleChange}
         />
         <input
-          placeholder="Senha" name="senha" type="password"
-          value={values.senha} onChange={handleChange}
+          placeholder="Senha"
+          name="senha"
+          type="password"
+          value={values.senha}
+          onChange={handleChange}
         />
-        {/* <pre>
-          {JSON.stringify(values, null, 2)}
-        </pre> */}
+        <pre>{JSON.stringify(values, null, 2)}</pre>
         <div>
-          <button>
-            Entrar
-          </button>
+          <button>Entrar</button>
         </div>
       </form>
     </div>
