@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { authService } from "../services/auth/authService";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -10,9 +11,29 @@ export default function HomeScreen() {
   });
 
   const handleSubmit = (event) => {
+    /**
+     * HANDLESUBMIT:
+     * está fazendo o papel de CONTROLLER;
+     * Pega os dados do usuário e passa para o serviço executar determinada ação;
+     */
+
+    /**
+     * AUTHSERVICE
+     * Está fazendo o papel de serviço (contendo a regra de negócio da app);
+     * Onde se encontra a lógica que será executada para algo;
+     */
+
     event.preventDefault();
-    router.push("/auth-page-ssr");
-    // router.push("/auth-page-static");
+
+    authService
+      .login({ username: values.usuario, password: values.senha })
+      .then(() => {
+        router.push("/auth-page-ssr");
+        // router.push("/auth-page-static");
+      })
+      .catch((err) => {
+        window.alert("Usuário ou senha incorretos");
+      });
   };
 
   const handleChange = (event) => {
