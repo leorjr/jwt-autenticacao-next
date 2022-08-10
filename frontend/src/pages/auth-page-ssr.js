@@ -1,14 +1,21 @@
-import nookies from "nookies";
-import { tokenService } from "../services/auth/tokenService";
+import { authService } from "../services/auth/authService";
 
 export async function getServerSideProps(ctx) {
-  const cookies = nookies.get(ctx);
-  console.log("cookies", cookies);
-  return {
-    props: {
-      token: tokenService.get(ctx),
-    },
-  };
+  try {
+    const session = await authService.getSession(ctx);
+    return {
+      props: {
+        session,
+      },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/?error=unauthorized",
+      },
+    };
+  }
 }
 
 function AuthPageSSR(props) {

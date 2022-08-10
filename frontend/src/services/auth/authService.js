@@ -21,4 +21,21 @@ export const authService = {
       tokenService.save(respostaFormatada.data.access_token);
     });
   },
+  getSession: async (ctx) => {
+    const token = tokenService.get(ctx);
+
+    return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/session`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(async (response) => {
+      const respostaFormatada = await response.json();
+
+      if (!respostaFormatada.data) throw new Error("Não autorizado");
+
+      return respostaFormatada;
+    });
+  },
 };
