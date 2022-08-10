@@ -1,3 +1,5 @@
+import { tokenService } from "./tokenService";
+
 export const authService = {
   login: async ({ username, password }) => {
     return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/login`, {
@@ -14,7 +16,9 @@ export const authService = {
 
       const respostaFormatada = await response.json();
 
-      console.log(respostaFormatada);
+      //   console.log(respostaFormatada);
+
+      tokenService.save(respostaFormatada.data.access_token);
     });
   },
 };

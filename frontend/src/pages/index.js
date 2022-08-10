@@ -6,8 +6,8 @@ export default function HomeScreen() {
   const router = useRouter();
 
   const [values, setValues] = useState({
-    usuario: "leonardo",
-    senha: "123456",
+    usuario: "omariosouto",
+    senha: "safepassword",
   });
 
   const handleSubmit = (event) => {
