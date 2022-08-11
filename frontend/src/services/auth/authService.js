@@ -11,15 +11,35 @@ export const authService = {
         username,
         password,
       }),
-    }).then(async (response) => {
-      if (!response.ok) throw new Error("Testeeeeee");
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Testeeeeee");
 
-      const respostaFormatada = await response.json();
+        const respostaFormatada = await response.json();
 
-      //   console.log(respostaFormatada);
+        tokenService.save(respostaFormatada.data.access_token);
+        return respostaFormatada;
+      })
+      .then(async ({ data }) => {
+        const { refresh_token } = data;
 
-      tokenService.save(respostaFormatada.data.access_token);
-    });
+        const urlServerSideNextAPi = "http://localhost:3000/api/refresh";
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refresh_token }),
+        };
+
+        const resposta = await fetch(urlServerSideNextAPi, options).then(
+          async (response) => {
+            return await response.json();
+          }
+        );
+
+        console.log(resposta);
+      });
   },
   getSession: async (ctx = null) => {
     const token = tokenService.get(ctx);
