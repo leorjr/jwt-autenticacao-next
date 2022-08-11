@@ -21,7 +21,7 @@ export const authService = {
       tokenService.save(respostaFormatada.data.access_token);
     });
   },
-  getSession: async (ctx) => {
+  getSession: async (ctx = null) => {
     const token = tokenService.get(ctx);
 
     return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/session`, {
