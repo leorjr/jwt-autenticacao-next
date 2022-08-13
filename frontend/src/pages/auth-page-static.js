@@ -39,6 +39,9 @@ function AuthPageStatic(props) {
 
   return (
     <div>
+      <p>
+        <a href="/logout">Logout</a>
+      </p>
       <h1>Auth Page Static</h1>
       <pre>{JSON.stringify(session, null, 2)}</pre>
     </div>

@@ -74,12 +74,24 @@ const controllers = {
       res.status(401).json({ msg: "unauthorized", status: 401 });
     }
   },
+  async deleteSession(req, res) {
+    const ctx = { req, res };
+
+    nookies.destroy(ctx, REFRESH_TOKEN_NAME, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    res.status(200);
+  },
 };
 
 const controllerBy = {
   POST: controllers.storeRefreshToken,
   //   GET: controllers.getInformation,
   GET: controllers.regerenareToken,
+  DELETE: controllers.deleteSession,
 };
 
 export default function handler(request, response) {
